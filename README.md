@@ -4,6 +4,7 @@ language:
 license: apache-2.0
 library_name: phonebook
 tags:
+  - text2text-generation
   - grapheme-to-phoneme
   - g2p
   - japanese
@@ -19,7 +20,6 @@ datasets:
 metrics:
   - exact_match
   - cer
-pipeline_tag: text2text-generation
 ---
 
 # Phonebook — reading Japanese corporate names by structure, not by memory

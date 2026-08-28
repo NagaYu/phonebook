@@ -3,8 +3,8 @@ language:
   - ja
 license: apache-2.0
 library_name: phonebook
-pipeline_tag: text2text-generation
 tags:
+  - text2text-generation
   - japanese
   - katakana
   - g2p
