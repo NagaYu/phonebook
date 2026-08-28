@@ -26,8 +26,10 @@ metrics:
 **Getting the reading of "株式会社◯◯" right is easy. The hard part is the ◯◯ you have never seen.**
 
 A character-level seq2seq model specialised in mapping Japanese corporate names to
-katakana readings. About 17M parameters by default, built to run on CPU, with a copy
-mechanism, constrained decoding, calibrated confidence and a rejection option.
+katakana readings. About 17M parameters, built to run on CPU, with a copy mechanism,
+constrained decoding, calibrated confidence and a rejection option.
+
+Code, dataset builder, evaluation and figures: **https://github.com/NagaYu/phonebook**
 
 > ## ⚠️ This checkpoint is trained on synthetic data
 >
@@ -85,7 +87,38 @@ Conditions: (A) pyopenjtalk / MeCab+UniDic, (B) a large LLM with prompting only,
 Metrics: exact match (strict and long-vowel-normalized), CER, n-best@3 coverage, ECE,
 coverage and precision under rejection, ms/item and resident RSS on CPU.
 
-Numbers are in `benchmarks/RESULTS.md` in the repository.
+### Measured results (synthetic corpus - see the warning above)
+
+Exact match with long vowels normalized, which is the fair comparison against G2P
+systems that emit a pronunciation form:
+
+| condition | (1) known | (2) unseen | (3) hard | (4) ambiguous |
+|---|---:|---:|---:|---:|
+| pyopenjtalk | 0.532 | 0.533 | 0.521 | 0.295 |
+| MeCab+UniDic | 0.470 | 0.470 | 0.443 | 0.240 |
+| Phonebook fp32 | **0.947** | **0.648** | **0.642** | 0.081 |
+| Phonebook Q4_K_M | **0.947** | **0.649** | **0.645** | 0.083 |
+
+Character error rate: Phonebook 0.004 / 0.027 / 0.027 / 0.120 against pyopenjtalk
+0.144 / 0.140 / 0.143 / 0.185. CPU: ~54 ms/item at beam 8 without a KV cache.
+
+**Where the hypothesis fails, stated plainly.** The design hypothesis was that the gap
+would *widen* on unseen entities. It does not. Phonebook leads pyopenjtalk by +0.415 on
+known entities but only +0.115 on unseen and +0.121 on hard, and its own drop from known
+to hard is -0.31 against pyopenjtalk's -0.01. It remains clearly ahead in absolute terms
+on unseen entities (0.649 vs 0.533, with roughly five times lower CER), but "ahead" and
+"the gap widens" are different claims and only the first one holds here.
+
+Calibration behaves the same way: ECE is 0.019 on known entities, 0.274 on unseen and
+0.786 on ambiguous. The rejection threshold fitted on dev (0.366) leaves coverage at 0.99
+on the test splits and barely lifts precision, because dev is dominated by
+known-entity-like cases. **Fit the threshold on data matching your deployment
+distribution.**
+
+Quantization is free: Q4_K_M matches fp32 within +/-0.003 exact match on every split, at
+10.8 MB of weights and the same latency.
+
+Full tables: `benchmarks/RESULTS.md` in the repository.
 
 ## Export formats (note)
 

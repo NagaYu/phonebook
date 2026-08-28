@@ -214,9 +214,14 @@ generalizing.** Read the level and the drop together.
 
 ### Headline figures
 
+![Exact match per evaluation set](figures/known_vs_unseen_phonetic.png)
+
+![The drop from known to unseen and hard](figures/generalization_gap.png)
+
 | Figure | What it shows |
 |---|---|
-| `figures/known_vs_unseen.png` | Exact match per split |
+| `figures/known_vs_unseen.png` | Exact match per split (strict) |
+| `figures/known_vs_unseen_phonetic.png` | The same with long vowels normalized |
 | `figures/generalization_gap.png` | The drop from known → unseen → hard, strict and lenient side by side |
 | `figures/reliability.png` | Confidence against empirical accuracy |
 | `figures/rejection.png` | Coverage against precision on accepted items |
@@ -328,6 +333,21 @@ publish as a derived dataset.
    **stratifies by (corporation kind × whether the trade-name core appeared in
    training)** and reports the expected accuracy reweighted to the composition of the
    missing set.
+
+On the synthetic run, 4,000 missing-furigana records gave a 98.9% acceptance rate at the
+dev-fitted threshold, with a naive overall accuracy of 0.825 against a stratified
+expected accuracy of **0.842** — and the strata that matter are visible:
+
+| stratum | share of the missing set | accuracy |
+|---|---:|---:|
+| Kabushiki-Kaisha, core seen in training | 47.9% | 0.947 |
+| Kabushiki-Kaisha, core unseen | 22.2% | 0.620 |
+| Yugen-Kaisha, core seen | 13.6% | 0.942 |
+| Yugen-Kaisha, core unseen | 7.9% | 0.658 |
+
+Nearly a third of the completion target sits in the "core unseen" strata, where accuracy
+is around 0.62–0.66 rather than 0.94. Quoting a single overall number would hide exactly
+that.
 
 ---
 
