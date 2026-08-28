@@ -49,6 +49,10 @@ negative results are written up in [Results](#results) rather than buried.
 Beyond accuracy, Phonebook is built to **know how likely it is to be right**. Its
 confidence is calibrated, and below a threshold it answers **"unknown"**.
 
+**Model weights:** https://huggingface.co/NagaYu/phonebook
+(PyTorch, GGUF Q4_K_M / Q8_0, ONNX, MLX — the checkpoint there is trained on the
+synthetic corpus; see the model card.)
+
 ---
 
 ## Three lines
@@ -57,6 +61,16 @@ confidence is calibrated, and below a threshold it answers **"unknown"**.
 from phonebook import load_reader
 reader = load_reader()                       # reads artifacts/model or $PHONEBOOK_MODEL
 print(reader.read("株式会社日本電気", nbest=3).to_dict())
+```
+
+Weights straight from the Hub:
+
+```bash
+pip install -e ".[all]"
+python -c "
+from huggingface_hub import snapshot_download
+snapshot_download('NagaYu/phonebook', allow_patterns=['model.pt','config.json','tokenizer.json','calibrator.json','threshold.json'], local_dir='artifacts/model')"
+phonebook read "株式会社日本電気" --nbest 3
 ```
 
 From the command line:
