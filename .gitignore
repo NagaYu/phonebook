@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# 公的データの再配布は行わない: 生データはリポジトリに含めない
+data/raw/
+data/processed/
+artifacts/
+!artifacts/.gitkeep
+*.zip
+*.gguf
+*.onnx

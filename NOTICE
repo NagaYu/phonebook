@@ -1,0 +1,29 @@
+Phonebook
+Copyright 2026 Phonebook contributors
+
+This software is distributed under the Apache License 2.0 (see LICENSE).
+
+------------------------------------------------------------------------
+Data source
+------------------------------------------------------------------------
+The data used for training and evaluation derives from information published
+by Japan's National Tax Agency on the Corporate Number Publication Site.
+
+    Source: National Tax Agency Corporate Number Publication Site (NTA)
+    https://www.houjin-bangou.nta.go.jp/
+    Created by processing that data.
+
+The published information may be used under terms conforming to the Japanese
+Government's Public Data License (Version 1.0), which requires crediting the
+source and stating that the data has been modified.
+Current terms: https://www.houjin-bangou.nta.go.jp/pc/riyokiyaku/
+
+This repository does not redistribute the NTA raw data. Fetch it yourself with
+scripts/fetch_houjin.py.
+
+------------------------------------------------------------------------
+Disclaimer
+------------------------------------------------------------------------
+Readings produced by this software are estimates. They are not the official
+furigana published by the National Tax Agency. Do not publish or use them in a
+manner suggesting that the government produced them.
